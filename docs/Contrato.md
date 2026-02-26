@@ -57,3 +57,101 @@ Retorna um mapa de suítes com seus status atuais.
   }
 ]
 ```
+
+&ensp;
+
+## Gestão de Equipe (Usuários)
+
+### GET api/users
+
+Retorna a lista de usuários cadastrados
+
+```
+[
+  {
+    "id": 1,
+    "name": "Fulano de tal",
+    "email": "fulanodetal@email.com",
+    "role": {
+      "id": 1,
+      "name": "admin": {
+        "permissions": [
+          {"id": 1, name: "create_user"},
+          {"id": 2, name: "edit_user"},
+          {"id": 3, name: "create_suite"},
+          {"id": 4, name: "edit_suite"},
+        ]
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Seu Zé",
+    "email": "seu.ze@hotmail.com",
+    "role": {
+      "operator": {
+        "permissions": [
+          {"id": 3, name: "create_suite"},
+          {"id": 4, name: "edit_suite"},
+        ]
+      }
+    }
+  }
+]
+```
+
+
+### POST api/users
+
+Criar um usuário
+
+```
+ {
+  "id": 1,
+  "name": "Fulano de tal",
+  "email": "fulanodetal@email.com",
+  "role": {
+    "id": 1,
+    "name": "admin": {
+      "permissions": [
+        {"id": 1, name: "create_user"},
+        {"id": 2, name: "edit_user"},
+        {"id": 3, name: "create_suite"},
+        {"id": 4, name: "edit_suite"},
+      ]
+    }
+  }
+}
+```
+
+### PATCH api/users/1
+
+Editar um usuário
+
+```
+{
+  "name": "Fulano de tal",
+  "email": "fulanodetal@email.com",
+  "role": {
+    "id": 2,
+    "name": "operator": {
+      "permissions": [
+        {"id": 1, name: "create_user"},
+        {"id": 2, name: "edit_user"},
+        {"id": 3, name: "create_suite"},
+        {"id": 4, name: "edit_suite"},
+      ]
+    }
+  }
+}
+```
+
+### DELETE api/users/1
+
+Deletar um usuário
+
+```
+{
+  "id": 1
+}
+```
