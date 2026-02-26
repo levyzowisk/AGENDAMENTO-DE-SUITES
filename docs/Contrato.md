@@ -57,3 +57,46 @@ Retorna um mapa de suítes com seus status atuais.
   }
 ]
 ```
+
+## Bookings (agendamentos)
+
+### GET /api/bookings
+
+Retorna o histórico e o status dos agendamentos.
+
+```
+[
+  {
+    "id": 50,
+    "suiteId": 1,
+    "scheduledTime": "2026-02-25T14:30:00Z",
+    "checkInTime": "2026-02-25T14:45:00Z",
+    "checkOutTime": null,
+    "reservationFeePaid": 50.00,
+    "status": "confirmed"
+  }
+]
+```
+
+## Consumables (consumiveis)
+
+### GET /api/consumables
+
+Lista os itens disponíveis para consumo e estoque atual.
+
+```
+[
+  {
+    "id": 10,
+    "name": "Água Mineral",
+    "amount": 5.00,
+    "currentStock": 150
+  },
+  {
+    "id": 11,
+    "name": "Cerveja Lata",
+    "amount": 8.50,
+    "currentStock": 48
+  }
+]
+```
