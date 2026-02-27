@@ -27,7 +27,7 @@ db:
 setup:
 	# copiar o .env se ainda não existir
 	# cp -n laravel/.env.example laravel/.env 
- 	cp --update=none laravel/.env.example laravel/.env
+	cp --update=none laravel/.env.example laravel/.env
 
 	# instalar as dependencias/pacotes
 	docker compose exec php bash -c "composer install"
