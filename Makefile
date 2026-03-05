@@ -26,8 +26,8 @@ db:
 # só usa uma vez, pra configurar um novo projeto
 setup:
 	# copiar o .env se ainda não existir
-	# cp -n laravel/.env.example laravel/.env 
-	cp --update=none laravel/.env.example laravel/.env
+	cp -n laravel/.env.example laravel/.env 
+	# cp --update=none laravel/.env.example laravel/.env
 
 	# instalar as dependencias/pacotes
 	docker compose exec php bash -c "composer install"

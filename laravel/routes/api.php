@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\SuiteController;
 
 Route::prefix('suites')->group(function () {
-    Route::get('/', [\App\Http\Controllers\SuiteController::class, 'index']);
-    Route::get('/map', [\App\Http\Controllers\SuiteController::class, 'suiteMap']);
+    Route::get('/', [SuiteController::class, 'index']);
+    Route::get('/{id}', [SuiteController::class, 'show']);
+    Route::post('/', [SuiteController::class, 'store']);
+    Route::delete('/{id}', [SuiteController::class, 'destroy']);
+    Route::patch('/{id}', [SuiteController::class, 'update']);
+    Route::get('/map', [SuiteController::class, 'suiteMap']);
 });
 
 
