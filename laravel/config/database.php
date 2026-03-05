@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
+use Pdo\Mysql;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -30,7 +32,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
@@ -58,7 +59,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
@@ -78,7 +79,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Pdo\Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
@@ -111,7 +112,6 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-
     ],
 
     /*
@@ -142,12 +142,11 @@ return [
     */
 
     'redis' => [
-
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-database-'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
@@ -168,7 +167,5 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
-
     ],
-
 ];
