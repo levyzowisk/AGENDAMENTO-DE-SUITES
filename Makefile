@@ -1,6 +1,9 @@
 up:
 	docker compose up -d
 
+update_composer:
+	docker compose exec php bash -c "composer update"
+
 up_build:
 	docker compose up -d --build
 
@@ -23,6 +26,7 @@ db:
 # só usa uma vez, pra configurar um novo projeto
 setup:
 	# copiar o .env se ainda não existir
+	# cp -n laravel/.env.example laravel/.env 
 	cp --update=none laravel/.env.example laravel/.env
 
 	# instalar as dependencias/pacotes

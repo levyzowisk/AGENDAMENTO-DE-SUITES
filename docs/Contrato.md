@@ -2,7 +2,7 @@
 
 ## Suítes
 
-### GET api/suite/available
+### GET api/suite
 
 Retorna uma lista de suítes disponíveis para aluguel.
 
@@ -10,14 +10,14 @@ Retorna uma lista de suítes disponíveis para aluguel.
 [
 {
     "id": 1,
-    "types": "simples",
+    "type": "simples",
     "amountPerHour": "100.00",
     "availableCount": 6,
     "features": ["TV", "Ar-condicionado"]
 },
 {
     "id": 2,
-    "types": "duplo",
+    "type": "duplo",
     "amountPerHour": "150.00",
     "availableCount": 4,
     "features": ["TV", "Ar-condicionado", "Frigobar"]
@@ -43,8 +43,6 @@ Retorna um mapa de suítes com seus status atuais.
     "type": "premium",
     "status": "OCCUPIED",
     "checkInTime": 1740482400000,
-    "timer": "02:15:10",
-    "pendingMessages": 2
   },
   {
     "id": 8,
