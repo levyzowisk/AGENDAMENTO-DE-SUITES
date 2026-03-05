@@ -2,35 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Contracts\Suite\SuiteServiceInterface;
+use App\Http\Resources\SuiteResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SuiteController extends Controller
 {
-    public function index():array
+    public function __construct(
+        private readonly SuiteServiceInterface $suiteServiceInterface
+    )
     {
-        return [
-            [
-                "id" => 1,
-                "type" => "suite",
-                "amountPerHour" => 100,
-                "availableCount" => 5,
-                "features" => [
-                    "TV",
-                    "Ar-condicionado",
-                ]
-            ],
-            [
-                "id" => 2,
-                "type" => "suite",
-                "amountPerHour" => 150,
-                "availableCount" => 3,
-                "features" => [
-                    "TV",
-                    "Ar-condicionado",
-                    "Frigobar",
-                ]
-            ],
-        ];
+    }
+
+    public function index(): AnonymousResourceCollection
+    {
+        $suites = $this->suiteServiceInterface->getAllSuites();
+        return SuiteResource::collection($suites);
     }
 
     public function suiteMap()
