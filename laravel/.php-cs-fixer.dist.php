@@ -7,10 +7,10 @@ use PhpCsFixer\Finder;
 
 // 1. Defina quais pastas o Fixer deve analisar
 $finder = (new Finder())
-    ->in(__DIR__)
+    ->in([__DIR__])
     ->exclude(['vendor', 'storage', 'bootstrap/cache']) // Pastas comuns para ignorar no Laravel
     ->notPath('*.blade.php') // Evita tentar formatar arquivos Blade
-    ->name('*.php')
+    // ->name('*.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
