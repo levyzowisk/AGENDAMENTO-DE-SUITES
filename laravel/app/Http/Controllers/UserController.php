@@ -13,50 +13,50 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
-	public function __construct(
-		private readonly UserServiceInterface $userService
-	) {
-	}
+    public function __construct(
+        private readonly UserServiceInterface $userService,
+    ) {}
 
-	/**
-	 * GET /api/users
-	 */
-	public function index(): AnonymousResourceCollection
-	{
-		$users = $this->userService->listAll();
+    /**
+     * GET /api/users.
+     */
+    public function index(): AnonymousResourceCollection
+    {
+        $users = $this->userService->listAll();
 
-		return UserResource::collection($users);
-	}
+        return UserResource::collection($users);
+    }
 
-	/**
-	 * POST /api/users
-	 */
-	public function store(StoreUserRequest $request): JsonResponse
-	{
-		$user = $this->userService->create($request->validated());
+    /**
+     * POST /api/users.
+     */
+    public function store(StoreUserRequest $request): JsonResponse
+    {
+        $user = $this->userService->create($request->validated());
 
-		return (new UserResource($user))
-			->response()
-			->setStatusCode(201);
-	}
+        return (new UserResource($user))
+            ->response()
+            ->setStatusCode(201)
+        ;
+    }
 
-	/**
-	 * PATCH /api/users/{user}
-	 */
-	public function update(UpdateUserRequest $request, int $user): JsonResponse
-	{
-		$updated = $this->userService->update($user, $request->validated());
+    /**
+     * PATCH /api/users/{user}.
+     */
+    public function update(UpdateUserRequest $request, int $user): JsonResponse
+    {
+        $updated = $this->userService->update($user, $request->validated());
 
-		return (new UserResource($updated))->response();
-	}
+        return (new UserResource($updated))->response();
+    }
 
-	/**
-	 * DELETE /api/users/{user}
-	 */
-	public function destroy(int $user): JsonResponse
-	{
-		$this->userService->delete($user);
+    /**
+     * DELETE /api/users/{user}.
+     */
+    public function destroy(int $user): JsonResponse
+    {
+        $this->userService->delete($user);
 
-		return response()->json(['id' => $user]);
-	}
+        return response()->json(['id' => $user]);
+    }
 }

@@ -13,72 +13,71 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService implements UserServiceInterface
 {
-	public function __construct(
-		private readonly UserRepositoryInterface $userRepository
-	) {
-	}
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+    ) {}
 
-	public function listAll(): Collection
-	{
-		return $this->userRepository->all();
-	}
+    public function listAll(): Collection
+    {
+        return $this->userRepository->all();
+    }
 
-	public function getById(int $id): User
-	{
-		$user = $this->userRepository->findById($id);
+    public function getById(int $id): User
+    {
+        $user = $this->userRepository->findById($id);
 
-		if (!$user) {
-			throw new ModelNotFoundException("Usuário com id {$id} não encontrado.");
-		}
+        if (!$user) {
+            throw new ModelNotFoundException("Usuário com id {$id} não encontrado.");
+        }
 
-		return $user;
-	}
+        return $user;
+    }
 
-	public function create(array $data): User
-	{
-		$role = $data['role'] ?? null;
+    public function create(array $data): User
+    {
+        $role = $data['role'] ?? null;
 
-		$userData = [
-			'name' => $data['name'],
-			'email' => $data['email'],
-			'password' => Hash::make($data['password']),
-		];
+        $userData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ];
 
-		$user = $this->userRepository->create($userData);
+        $user = $this->userRepository->create($userData);
 
-		if ($role) {
-			$user->assignRole($role);
-		}
+        if ($role) {
+            $user->assignRole($role);
+        }
 
-		return $user->load('roles.permissions');
-	}
+        return $user->load('roles.permissions');
+    }
 
-	public function update(int $id, array $data): User
-	{
-		$user = $this->getById($id);
+    public function update(int $id, array $data): User
+    {
+        $user = $this->getById($id);
 
-		$updateData = array_filter([
-			'name' => $data['name'] ?? null,
-			'email' => $data['email'] ?? null,
-		], fn($v) => !is_null($v));
+        $updateData = array_filter([
+            'name' => $data['name'] ?? null,
+            'email' => $data['email'] ?? null,
+        ], fn ($v) => !is_null($v));
 
-		if (!empty($data['password'])) {
-			$updateData['password'] = Hash::make($data['password']);
-		}
+        if (!empty($data['password'])) {
+            $updateData['password'] = Hash::make($data['password']);
+        }
 
-		$user = $this->userRepository->update($user, $updateData);
+        $user = $this->userRepository->update($user, $updateData);
 
-		if (isset($data['role'])) {
-			$user->syncRoles($data['role']);
-		}
+        if (isset($data['role'])) {
+            $user->syncRoles($data['role']);
+        }
 
-		return $user->load('roles.permissions');
-	}
+        return $user->load('roles.permissions');
+    }
 
-	public function delete(int $id): bool
-	{
-		$user = $this->getById($id);
+    public function delete(int $id): bool
+    {
+        $user = $this->getById($id);
 
-		return $this->userRepository->delete($user);
-	}
+        return $this->userRepository->delete($user);
+    }
 }

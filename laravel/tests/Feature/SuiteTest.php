@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -7,27 +9,31 @@ namespace Tests\Feature;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class SuiteTest extends TestCase
 {
     /**
      * A basic test example.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function testTheApplicationReturnsASuccessfulResponse(): void
     {
         $response = $this->get('/api/suites');
 
         $response->assertStatus(200);
     }
 
-    public function test_must_return_array(): void 
+    public function testMustReturnArray(): void
     {
         $response = $this->get('/api/suites');
-
 
         $response->assertJsonIsArray();
     }
 
-    public function test_must_return_array_with_correct_keys(): void 
+    public function testMustReturnArrayWithCorrectKeys(): void
     {
         $response = $this->get('/api/suites');
 
@@ -38,30 +44,31 @@ class SuiteTest extends TestCase
                 'features',
                 'amountPerHour',
                 'availableCount',
-            ]
+            ],
         ]);
     }
 
-    public function test_suites_have_correct_structure_and_types(): void
+    public function testSuitesHaveCorrectStructureAndTypes(): void
     {
         $response = $this->getJson('/api/suites');
 
         $response->assertOk()
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->each(fn (AssertableJson $suite) =>
-                    $suite->whereType('id', 'integer')
+            ->assertJson(
+                fn (AssertableJson $json) => $json->each(
+                    fn (AssertableJson $suite) => $suite->whereType('id', 'integer')
                         ->whereType('type', 'string')
                         ->whereType('amountPerHour', ['integer', 'double'])
                         ->whereType('availableCount', 'integer')
                         ->whereType('features', 'array')
                 )
-            );
+            )
+        ;
     }
 
     /**
-     * Testa se a rota /suites/map retorna sucesso
+     * Testa se a rota /suites/map retorna sucesso.
      */
-    public function test_suite_map_returns_successful_response(): void
+    public function testSuiteMapReturnsSuccessfulResponse(): void
     {
         $response = $this->get('/api/suites/map');
 
@@ -69,13 +76,12 @@ class SuiteTest extends TestCase
     }
 
     /**
-     * Testa se /suites/map retorna um array
+     * Testa se /suites/map retorna um array.
      */
-    public function test_suite_map_must_return_array(): void 
+    public function testSuiteMapMustReturnArray(): void
     {
         $response = $this->get('/api/suites/map');
 
         $response->assertJsonIsArray();
     }
 }
-
