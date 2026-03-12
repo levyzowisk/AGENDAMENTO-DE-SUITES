@@ -10,6 +10,8 @@ up_build:
 bash:
 	docker compose exec php bash
 
+format:
+	docker compose exec php vendor/bin/php-cs-fixer fix
 
 fresh:
 	docker compose exec php php artisan migrate:fresh

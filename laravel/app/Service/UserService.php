@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class UserService implements UserServiceInterface
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
     ) {}
 
     public function listAll(): Collection
