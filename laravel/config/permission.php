@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+use Spatie\Permission\DefaultTeamResolver;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 return [
-
     'models' => [
-
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
          * Eloquent model should be used to retrieve your permissions. Of course, it
@@ -13,7 +17,7 @@ return [
          * `Spatie\Permission\Contracts\Permission` contract.
          */
 
-        'permission' => Spatie\Permission\Models\Permission::class,
+        'permission' => Permission::class,
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -24,12 +28,10 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => Spatie\Permission\Models\Role::class,
-
+        'role' => Role::class,
     ],
 
     'table_names' => [
-
         /*
          * When using the "HasRoles" trait from this package, we need to know which
          * table should be used to retrieve your roles. We have chosen a basic
@@ -72,9 +74,7 @@ return [
     ],
 
     'column_names' => [
-        /*
-         * Change this if you want to name the related pivots other than defaults
-         */
+        // Change this if you want to name the related pivots other than defaults
         'role_pivot_key' => null, // default 'role_id',
         'permission_pivot_key' => null, // default 'permission_id',
 
@@ -133,10 +133,8 @@ return [
 
     'teams' => false,
 
-    /*
-     * The class to use to resolve the permissions team id
-     */
-    'team_resolver' => \Spatie\Permission\DefaultTeamResolver::class,
+    // The class to use to resolve the permissions team id
+    'team_resolver' => DefaultTeamResolver::class,
 
     /*
      * Passport Client Credentials Grant
@@ -174,20 +172,17 @@ return [
      */
     // 'wildcard_permission' => Spatie\Permission\WildcardPermission::class,
 
-    /* Cache-specific settings */
+    // Cache-specific settings
 
     'cache' => [
-
         /*
          * By default all permissions are cached for 24 hours to speed up performance.
          * When permissions or roles are updated the cache is flushed automatically.
          */
 
-        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
+        'expiration_time' => DateInterval::createFromDateString('24 hours'),
 
-        /*
-         * The cache key used to store all permissions.
-         */
+        // The cache key used to store all permissions.
 
         'key' => 'spatie.permission.cache',
 
