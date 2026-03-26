@@ -4,35 +4,58 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Suite\SuiteServiceInterface;
+use App\Http\Requests\Suite\StoreSuiteRequest;
+use App\Http\Resources\SuiteResource;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Suite\UpdateSuiteRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
 class SuiteController extends Controller
 {
-    public function index(): array
+    public function __construct(
+        private readonly SuiteServiceInterface $suiteServiceInterface
+    )
     {
-        return [
-            [
-                'id' => 1,
-                'type' => 'suite',
-                'amountPerHour' => 100,
-                'availableCount' => 5,
-                'features' => [
-                    'TV',
-                    'Ar-condicionado',
-                ],
-            ],
-            [
-                'id' => 2,
-                'type' => 'suite',
-                'amountPerHour' => 150,
-                'availableCount' => 3,
-                'features' => [
-                    'TV',
-                    'Ar-condicionado',
-                    'Frigobar',
-                ],
-            ],
-        ];
     }
 
+    public function index(): AnonymousResourceCollection
+    {
+        $suites = $this->suiteServiceInterface->getAllSuites();
+        return SuiteResource::collection($suites);
+    }
+
+    public function show (int $id): SuiteResource
+    {
+        $suite = $this->suiteServiceInterface->show($id);
+        
+        return new SuiteResource($suite);
+    }
+
+
+    public function store(StoreSuiteRequest $request): JsonResponse
+    {
+        $suite = $this->suiteServiceInterface->store($request->validated());
+
+        return response()->json(new SuiteResource($suite), 201);
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $this->suiteServiceInterface->destroy($id);
+
+        return response()->json(null, 204);
+      
+    }
+
+    public function update(UpdateSuiteRequest $request, int $id): JsonResponse
+    {
+        $updatedSuite = $this->suiteServiceInterface->update($id, $request->validated());
+
+        return response()->json(new SuiteResource($updatedSuite));
+    }
+    
     public function suiteMap()
     {
         return [
