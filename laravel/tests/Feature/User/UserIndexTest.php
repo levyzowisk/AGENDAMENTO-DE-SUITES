@@ -16,47 +16,48 @@ use Tests\TestCase;
  */
 class UserIndexTest extends TestCase
 {
-    use RefreshDatabase;
+	use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(RolePermissionSeeder::class);
-    }
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->seed(RolePermissionSeeder::class);
+		$admin = User::factory()->create();
+		$admin->assignRole('admin');
+		$this->actingAs($admin, 'sanctum');
+	}
 
-    public function testReturnsEmptyListWhenNoUsers(): void
-    {
-        $response = $this->getJson('/api/users');
+	public function test_returns_empty_list_when_no_users(): void
+	{
+		$response = $this->getJson('/api/users');
 
-        $response->assertStatus(200)
-            ->assertJson(['data' => []])
-        ;
-    }
+		$response->assertStatus(200)
+			->assertJson(['data' => []]);
+	}
 
-    public function testReturnsListOfUsersWithRolesAndPermissions(): void
-    {
-        $user = User::factory()->create();
-        $user->assignRole('admin');
+	public function test_returns_list_of_users_with_roles_and_permissions(): void
+	{
+		$user = User::factory()->create();
+		$user->assignRole('admin');
 
-        $response = $this->getJson('/api/users');
+		$response = $this->getJson('/api/users');
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => [
-                    '*' => [
-                        'id',
-                        'name',
-                        'email',
-                        'role' => [
-                            'id',
-                            'name',
-                            'permissions' => [
-                                '*' => ['id', 'name'],
-                            ],
-                        ],
-                    ],
-                ],
-            ])
-        ;
-    }
+		$response->assertStatus(200)
+			->assertJsonStructure([
+				'data' => [
+					'*' => [
+						'id',
+						'name',
+						'email',
+						'role' => [
+							'id',
+							'name',
+							'permissions' => [
+								'*' => ['id', 'name'],
+							],
+						],
+					],
+				],
+			]);
+	}
 }

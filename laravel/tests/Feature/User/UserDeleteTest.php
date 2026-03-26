@@ -18,11 +18,14 @@ class UserDeleteTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seed(RolePermissionSeeder::class);
-    }
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->seed(RolePermissionSeeder::class);
+		$admin = User::factory()->create();
+		$admin->assignRole('admin');
+		$this->actingAs($admin, 'sanctum');
+	}
 
     public function testDeletesUserSuccessfully(): void
     {

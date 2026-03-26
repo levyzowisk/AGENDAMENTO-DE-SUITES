@@ -3,8 +3,12 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuiteController;
+
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::prefix('suites')->group(function () {
     Route::get('/', [SuiteController::class, 'index']);
@@ -16,4 +20,6 @@ Route::prefix('suites')->group(function () {
 });
 
 // Gestão de Equipe (Usuários)
-Route::apiResource('users', UserController::class)->except(['show']);
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::apiResource('users', UserController::class);
+});
