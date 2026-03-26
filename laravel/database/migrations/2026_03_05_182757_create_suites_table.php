@@ -15,7 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('type_suite');
             $table->decimal("amount_per_hour", 8, 2);
-            $table->string('available_count');
+            $table->timestamps();
+        });
+
+        Schema::create('suite_units', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('suite_id')->constrained('suites')->onDelete('cascade');
+            
+            $table->string('room_number');
+            $table->enum('status', ['FREE', 'OCCUPIED', 'CLEANING', 'MAINTENANCE', 'BOOKED'])->default('FREE');
+            
             $table->timestamps();
         });
     }
@@ -25,6 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('suite_units');
         Schema::dropIfExists('suites');
     }
 };

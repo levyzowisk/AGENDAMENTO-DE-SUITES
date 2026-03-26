@@ -1,0 +1,40 @@
+<?php
+
+namespace Tests\Feature\Suite;
+
+use App\Models\Suite;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class SuiteDeleteTest extends TestCase
+{
+    use RefreshDatabase;
+
+
+    public function test_should_delete_suite_successfully(): void
+    {
+        $suite = Suite::factory()->create();
+
+        $response = $this->deleteJson("/api/suites/{$suite->id}");
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('suites', [
+            'id' => $suite->id,
+        ]);
+
+
+        $this->assertDatabaseMissing('suite_units', [
+            'suite_id' => $suite->id,
+        ]);
+    }
+
+    public function test_should_return_404_when_deleting_non_existent_suite(): void
+    {
+        $idInexistente = 9999;
+
+        $response = $this->deleteJson("/api/suites/{$idInexistente}");
+
+        $response->assertStatus(404);
+    }
+}
