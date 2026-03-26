@@ -9,6 +9,11 @@ use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class UserIndexTest extends TestCase
 {
 	use RefreshDatabase;

@@ -1,17 +1,23 @@
-<?php
+    <?php
+
+declare(strict_types=1);
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SuiteController;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::prefix('suites')->group(function () {
-    Route::get('/', [\App\Http\Controllers\SuiteController::class, 'index']);
-    Route::get('/map', [\App\Http\Controllers\SuiteController::class, 'suiteMap']);
+    Route::get('/', [SuiteController::class, 'index']);
+    Route::get('/{id}', [SuiteController::class, 'show']);
+    Route::post('/', [SuiteController::class, 'store']);
+    Route::delete('/{id}', [SuiteController::class, 'destroy']);
+    Route::patch('/{id}', [SuiteController::class, 'update']);
+    Route::get('/map', [SuiteController::class, 'suiteMap']);
 });
-
 
 // Gestão de Equipe (Usuários)
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {

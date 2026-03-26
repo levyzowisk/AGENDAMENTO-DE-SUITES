@@ -1,0 +1,295 @@
+openapi: 3.0.3
+info:
+  title: API de Agendamento de Suítes
+  description: Documentação da API do sistema de agendamento de suítes, separada das camadas de código.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Servidor de Desenvolvimento Local
+
+tags:
+  - name: Suites
+    description: Gerenciamento de Suítes e suas unidades
+  - name: Users
+    description: Gestão de equipe e usuários
+
+paths:
+  /suites:
+    get:
+      tags:
+        - Suites
+      summary: Lista todas as suítes
+      description: Retorna uma lista de todas as suítes cadastradas.
+      responses:
+        '200':
+          description: Operação bem sucedida. Uma lista de suítes foi retornada.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SuiteResponse'
+    post:
+      tags:
+        - Suites
+      summary: Cria uma nova suíte
+      description: Adiciona uma nova suíte com valor e tipo no sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuiteRequest'
+      responses:
+        '201':
+          description: Suíte criada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuiteResponse'
+        '422':
+          description: Erro de validação dos dados enviados.
+
+  /suites/{id}:
+    get:
+      tags:
+        - Suites
+      summary: Busca os detalhes de uma suíte
+      description: Retorna os dados completos de uma suíte específica baseada no ID informado.
+      parameters:
+        - name: id
+          in: path
+          description: ID da suíte na base de dados
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dados da suíte retornados com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuiteResponse'
+        '404':
+          description: Suíte não encontrada.
+    patch:
+      tags:
+        - Suites
+      summary: Atualiza uma suíte
+      description: Atualiza parcialmente ou totalmente uma suíte existente pelo ID.
+      parameters:
+        - name: id
+          in: path
+          description: ID da suíte
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuiteRequest'
+      responses:
+        '200':
+          description: Suíte atualizada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuiteResponse'
+        '404':
+          description: Suíte não encontrada.
+    delete:
+      tags:
+        - Suites
+      summary: Remove uma suíte
+      description: Remove do sistema uma suíte e todas as suas dependências (unidades atreladas) através do modo cascata.
+      parameters:
+        - name: id
+          in: path
+          description: ID numérico da suíte a ser apagada
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Suíte removida com sucesso. Sem conteúdo no corpo da resposta.
+        '404':
+          description: Suíte não encontrada.
+
+  /suites/map:
+    get:
+      tags:
+        - Suites
+      summary: Retorna o mapa de suítes
+      description: Retorna o estado atual das suítes e suas respectivas unidades ocupadas ou livres em tempo real.
+      responses:
+        '200':
+          description: Mapa retornado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Estrutura livre representando o mapa de disponibilidade.
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Lista todos os usuários (equipe)
+      responses:
+        '200':
+          description: Lista de usuários.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+    post:
+      tags:
+        - Users
+      summary: Cria um novo usuário
+      description: Inclui um novo membro da equipe enviando nome, email e senha.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '201':
+          description: Usuário criado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+  /users/{id}:
+    put:
+      tags:
+        - Users
+      summary: Atualiza um usuário (equipe)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Usuário atualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+    delete:
+      tags:
+        - Users
+      summary: Remove um usuário
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Sucesso.
+        '404':
+          description: Usuário não encontrado.
+
+components:
+  schemas:
+    SuiteRequest:
+      type: object
+      required:
+        - type_suite
+        - amount_per_hour
+      properties:
+        type_suite:
+          type: string
+          example: "LUXURY"
+          description: O identificador ou nome do tipo de suite
+        amount_per_hour:
+          type: number
+          format: float
+          example: 120.50
+          description: Valor cobrado por hora de uso da suite
+        available_count:
+          type: integer
+          example: 5
+          description: Opcional. Quantidade de unidades livres/iniciais na criação da suíte
+
+    SuiteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type_suite:
+          type: string
+          example: "LUXURY"
+        amount_per_hour:
+          type: number
+          format: float
+          example: 120.50
+        available_count:
+          type: integer
+          example: 5
+          description: Quantidade de unidades disponíveis (livres) para esta suíte
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-03-05T18:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-03-05T18:00:00Z"
+
+    UserRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "joao@exemplo.com"
+        password:
+          type: string
+          format: password
+          example: "senha_segura_123"
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "joao@exemplo.com"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-03-05T18:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-03-05T18:00:00Z"
