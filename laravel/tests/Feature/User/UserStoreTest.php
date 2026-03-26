@@ -17,6 +17,9 @@ class UserStoreTest extends TestCase
 	{
 		parent::setUp();
 		$this->seed(RolePermissionSeeder::class);
+		$admin = User::factory()->create();
+		$admin->assignRole('admin');
+		$this->actingAs($admin, 'sanctum');
 	}
 
 	public function test_creates_user_successfully(): void

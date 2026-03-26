@@ -17,6 +17,9 @@ class UserDeleteTest extends TestCase
 	{
 		parent::setUp();
 		$this->seed(RolePermissionSeeder::class);
+		$admin = User::factory()->create();
+		$admin->assignRole('admin');
+		$this->actingAs($admin, 'sanctum');
 	}
 
 	public function test_deletes_user_successfully(): void

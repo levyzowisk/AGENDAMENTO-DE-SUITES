@@ -17,6 +17,9 @@ class UserIndexTest extends TestCase
 	{
 		parent::setUp();
 		$this->seed(RolePermissionSeeder::class);
+		$admin = User::factory()->create();
+		$admin->assignRole('admin');
+		$this->actingAs($admin, 'sanctum');
 	}
 
 	public function test_returns_empty_list_when_no_users(): void
