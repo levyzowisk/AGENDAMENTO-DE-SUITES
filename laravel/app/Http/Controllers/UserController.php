@@ -29,6 +29,16 @@ class UserController extends Controller
 	}
 
 	/**
+	 * GET /api/users/{user}
+	 */
+	public function show(int $user): JsonResponse
+	{
+		$foundUser = $this->userService->getById($user);
+
+		return (new UserResource($foundUser))->response();
+	}
+
+	/**
 	 * POST /api/users
 	 */
 	public function store(StoreUserRequest $request): JsonResponse
