@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Contracts\Suite\SuiteRepositoryInterface;
+use App\Enums\SuiteStatusEnum;
 use App\Models\Suite;
 use App\Models\SuiteUnit;
-use App\Enums\SuiteStatusEnum;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class SuiteRepository implements SuiteRepositoryInterface
 {
@@ -16,7 +18,7 @@ class SuiteRepository implements SuiteRepositoryInterface
         return Suite::all();
     }
 
-    public function show (int $id): ?Suite
+    public function show(int $id): ?Suite
     {
         return Suite::find($id);
     }
@@ -34,16 +36,16 @@ class SuiteRepository implements SuiteRepositoryInterface
 
             // 2. Prepara os registros de quartos físicos reais (Inventário)
             $unitsToCreate = [];
-            for ($i = 0; $i < $countToCreate; $i++) {
+            for ($i = 0; $i < $countToCreate; ++$i) {
                 $unitsToCreate[] = [
                     'suite_id' => $suite->id,
-                    'room_number' => "SU-" . ($suite->id) . "0" . ($i + 1), // Ex: SU-101, SU-102
+                    'room_number' => 'SU-' . $suite->id . '0' . ($i + 1), // Ex: SU-101, SU-102
                     'status' => SuiteStatusEnum::FREE->value,
                     'created_at' => now(),
-                    'updated_at' => now()
+                    'updated_at' => now(),
                 ];
             }
-            
+
             // 3. Cadastra fisicamente as suítes
             if (!empty($unitsToCreate)) {
                 SuiteUnit::insert($unitsToCreate);

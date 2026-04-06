@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Enums\SuiteStatusEnum;
 use App\Models\Suite;
 use App\Models\SuiteUnit;
-use App\Enums\SuiteStatusEnum;
+use Illuminate\Database\Seeder;
 
 class SuitesSeeder extends Seeder
 {
@@ -39,13 +40,13 @@ class SuitesSeeder extends Seeder
             // Se for criar as unidades, garante que n duplique cada vez q rodar a seed
             if ($suite->units()->count() === 0) {
                 $unitsToCreate = [];
-                for ($i = 0; $i < $suiteData['available_count']; $i++) {
+                for ($i = 0; $i < $suiteData['available_count']; ++$i) {
                     $unitsToCreate[] = [
                         'suite_id' => $suite->id,
-                        'room_number' => "SU-" . $suite->id . "0" . ($i + 1),
+                        'room_number' => 'SU-' . $suite->id . '0' . ($i + 1),
                         'status' => SuiteStatusEnum::FREE->value,
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
                     ];
                 }
                 SuiteUnit::insert($unitsToCreate);

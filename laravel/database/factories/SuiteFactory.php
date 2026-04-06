@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use App\Enums\SuiteStatusEnum;
 use App\Models\Suite;
 use App\Models\SuiteUnit;
-use App\Enums\SuiteStatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,10 +30,10 @@ class SuiteFactory extends Factory
     {
         return $this->afterCreating(function (Suite $suite) {
             $count = fake()->numberBetween(1, 5);
-            for ($i = 0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; ++$i) {
                 SuiteUnit::create([
                     'suite_id' => $suite->id,
-                    'room_number' => "SU-" . $suite->id . "0" . ($i + 1),
+                    'room_number' => 'SU-' . $suite->id . '0' . ($i + 1),
                     'status' => SuiteStatusEnum::FREE->value,
                 ]);
             }

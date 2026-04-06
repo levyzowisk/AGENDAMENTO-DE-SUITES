@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Enums\SuiteStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\SuiteStatusEnum;
+
 class Suite extends Model
 {
     use HasFactory;
@@ -28,7 +31,7 @@ class Suite extends Model
 
     public function getAvailableCountAttribute(): int
     {
-        // Ao invés de um número fixo enganoso, ele faz a contagem em tempo real 
+        // Ao invés de um número fixo enganoso, ele faz a contagem em tempo real
         // dos quartos físicos vinculados a esta categoria que estão LIVRES.
         return $this->units()->where('status', SuiteStatusEnum::FREE->value)->count();
     }

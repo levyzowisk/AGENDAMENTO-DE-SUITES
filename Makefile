@@ -1,6 +1,9 @@
 up:
 	docker compose up -d
 
+install:
+	docker compose exec php bash -c "composer install"
+
 update_composer:
 	docker compose exec php bash -c "composer update"
 
@@ -43,3 +46,8 @@ setup:
 	# Atualizar o esquema do banco (criar tabelas, etc)
 	docker compose exec php bash -c "php artisan migrate"
 
+test:
+	docker compose exec php php artisan test
+
+test_coverage:
+	docker compose exec php php artisan test --coverage
