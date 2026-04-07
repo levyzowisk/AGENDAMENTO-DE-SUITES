@@ -12,7 +12,6 @@ use Mockery;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
 class SuiteServiceTest extends TestCase
 {
     private $repositoryMock;

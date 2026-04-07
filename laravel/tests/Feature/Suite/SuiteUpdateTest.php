@@ -8,7 +8,6 @@ use App\Models\Suite;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class SuiteUpdateTest extends TestCase
 {
     use RefreshDatabase;

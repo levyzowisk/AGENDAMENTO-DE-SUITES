@@ -6,9 +6,7 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
-
 
 class SuiteTest extends TestCase
 {
@@ -21,8 +19,6 @@ class SuiteTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-
 
     /**
      * Testa se a rota /suites/map retorna sucesso.

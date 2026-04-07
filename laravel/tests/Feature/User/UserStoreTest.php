@@ -9,7 +9,6 @@ use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-
 class UserStoreTest extends TestCase
 {
     use RefreshDatabase;
