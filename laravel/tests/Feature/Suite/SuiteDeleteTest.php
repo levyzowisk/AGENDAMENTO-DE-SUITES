@@ -8,11 +8,7 @@ use App\Models\Suite;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-/**
- * @internal
- *
- * @coversNothing
- */
+
 class SuiteDeleteTest extends TestCase
 {
     use RefreshDatabase;

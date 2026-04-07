@@ -12,11 +12,11 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::prefix('suites')->group(function () {
     Route::get('/', [SuiteController::class, 'index']);
+    Route::get('/map', [SuiteController::class, 'suiteMap']);
     Route::get('/{id}', [SuiteController::class, 'show']);
     Route::post('/', [SuiteController::class, 'store']);
     Route::delete('/{id}', [SuiteController::class, 'destroy']);
     Route::patch('/{id}', [SuiteController::class, 'update']);
-    Route::get('/map', [SuiteController::class, 'suiteMap']);
 });
 
 // Gestão de Equipe (Usuários)

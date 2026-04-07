@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libicu-dev
 
-RUN pecl install pcov && docker-php-ext-enable pcov
+# RUN pecl install pcov && docker-php-ext-enable pcov
+RUN pecl install xdebug && docker-php-ext-enable xdebug
 RUN docker-php-ext-install zip pdo_mysql mbstring exif intl
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
 RUN docker-php-ext-install gd
