@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Suite;
 
 use App\Contracts\Suite\SuiteRepositoryInterface;
@@ -21,10 +23,10 @@ class SuiteServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Criação do mock (Dublê) do repositório
         $this->repositoryMock = Mockery::mock(SuiteRepositoryInterface::class);
-        
+
         // Injeção da dependência falsa no Service real que queremos testar
         $this->suiteService = new SuiteService($this->repositoryMock);
     }
@@ -38,7 +40,7 @@ class SuiteServiceTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_should_return_all_suites(): void
+    public function testShouldReturnAllSuites(): void
     {
         // 1. Prepara dados falsos
         $collection = new Collection([new Suite(), new Suite()]);
@@ -46,7 +48,8 @@ class SuiteServiceTest extends TestCase
         // 2. Ensina o Mock o que ele deve retornar
         $this->repositoryMock->shouldReceive('all')
             ->once()
-            ->andReturn($collection);
+            ->andReturn($collection)
+        ;
 
         // 3. Executa a Ação
         $result = $this->suiteService->getAllSuites();
@@ -56,7 +59,7 @@ class SuiteServiceTest extends TestCase
         $this->assertCount(2, $result);
     }
 
-    public function test_should_return_suite_by_id_when_exists(): void
+    public function testShouldReturnSuiteByIdWhenExists(): void
     {
         $suiteMock = new Suite();
         $suiteMock->id = 1;
@@ -64,7 +67,8 @@ class SuiteServiceTest extends TestCase
         $this->repositoryMock->shouldReceive('show')
             ->with(1) // Garante que a ID repassada ao mock foi a ID 1
             ->once()  // Garante que o método será chamado 1 vez certinha
-            ->andReturn($suiteMock);
+            ->andReturn($suiteMock)
+        ;
 
         $result = $this->suiteService->show(1);
 
@@ -72,13 +76,14 @@ class SuiteServiceTest extends TestCase
         $this->assertEquals(1, $result->id);
     }
 
-    public function test_should_throw_exception_when_suite_not_found(): void
+    public function testShouldThrowExceptionWhenSuiteNotFound(): void
     {
         // Aqui simulamos uma busca no banco que retorna null
         $this->repositoryMock->shouldReceive('show')
             ->with(99)
             ->once()
-            ->andReturn(null);
+            ->andReturn(null)
+        ;
 
         // Indicamos que ESPERAMOS que ele lance esse erro! Se não lançar, o teste falha.
         $this->expectException(NotFoundHttpException::class);
@@ -86,19 +91,20 @@ class SuiteServiceTest extends TestCase
         $this->suiteService->show(99);
     }
 
-    public function test_should_store_suite_successfully(): void
+    public function testShouldStoreSuiteSuccessfully(): void
     {
         $data = [
-            'type_suite' => 'Quarto Super', 
-            'amount_per_hour' => 120.00
+            'type_suite' => 'Quarto Super',
+            'amount_per_hour' => 120.00,
         ];
-        
+
         $suiteMock = new Suite($data);
 
         $this->repositoryMock->shouldReceive('store')
             ->with($data)
             ->once()
-            ->andReturn($suiteMock);
+            ->andReturn($suiteMock)
+        ;
 
         $result = $this->suiteService->store($data);
 
@@ -106,11 +112,11 @@ class SuiteServiceTest extends TestCase
         $this->assertEquals('Quarto Super', $result->type_suite);
     }
 
-    public function test_should_update_suite_successfully(): void
+    public function testShouldUpdateSuiteSuccessfully(): void
     {
         $suiteMock = new Suite();
         $suiteMock->id = 1;
-        
+
         $data = ['amount_per_hour' => 150];
 
         // Lembre-se: O método update da service chama o método show() internamente primeiro
@@ -118,19 +124,21 @@ class SuiteServiceTest extends TestCase
         $this->repositoryMock->shouldReceive('show')
             ->with(1)
             ->once()
-            ->andReturn($suiteMock);
+            ->andReturn($suiteMock)
+        ;
 
         $this->repositoryMock->shouldReceive('update')
             ->with($suiteMock, $data)
             ->once()
-            ->andReturn($suiteMock);
+            ->andReturn($suiteMock)
+        ;
 
         $result = $this->suiteService->update(1, $data);
 
         $this->assertInstanceOf(Suite::class, $result);
     }
 
-    public function test_should_destroy_suite_successfully(): void
+    public function testShouldDestroySuiteSuccessfully(): void
     {
         $suiteMock = new Suite();
         $suiteMock->id = 1;
@@ -139,17 +147,19 @@ class SuiteServiceTest extends TestCase
         $this->repositoryMock->shouldReceive('show')
             ->with(1)
             ->once()
-            ->andReturn($suiteMock);
+            ->andReturn($suiteMock)
+        ;
 
         $this->repositoryMock->shouldReceive('destroy')
             ->with(1)
             ->once()
-            ->andReturn();
+            ->andReturn()
+        ;
 
-        // O método destroy tem payload void (não retorna nada), 
+        // O método destroy tem payload void (não retorna nada),
         // então se não travar e os mocks chamarem certinho, foi um sucesso.
         $this->suiteService->destroy(1);
-        
+
         $this->assertTrue(true);
     }
 }

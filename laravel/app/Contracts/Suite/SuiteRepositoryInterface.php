@@ -7,15 +7,15 @@ namespace App\Contracts\Suite;
 use App\Models\Suite;
 use Illuminate\Database\Eloquent\Collection;
 
-interface SuiteRepositoryInterface{
+interface SuiteRepositoryInterface
+{
     public function all(): Collection;
-    
-    public function show (int $id): ?Suite;
 
-    public function store(array $data): Suite; 
+    public function show(int $id): ?Suite;
+
+    public function store(array $data): Suite;
 
     public function destroy(int $id): void;
 
     public function update(Suite $suite, array $data): Suite;
-
 }

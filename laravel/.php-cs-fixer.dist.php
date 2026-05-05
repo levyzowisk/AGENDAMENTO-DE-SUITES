@@ -21,6 +21,8 @@ return (new Config())
     ->setRules([
         '@PER-CS2.0' => true, // Padrão moderno (substituto do PSR-12)
         '@PhpCsFixer' => true,
+        'php_unit_internal_class' => false,
+        'php_unit_test_class_requires_covers' => false,
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false], // Padrão Laravel (sem Yoda)
         'array_syntax' => ['syntax' => 'short'], // Uso de colchetes [] em vez de array()
         'binary_operator_spaces' => [

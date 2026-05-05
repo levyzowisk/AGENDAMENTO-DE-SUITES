@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Suite;
 
 use App\Models\Suite;
@@ -10,8 +12,7 @@ class SuiteDeleteTest extends TestCase
 {
     use RefreshDatabase;
 
-
-    public function test_should_delete_suite_successfully(): void
+    public function testShouldDeleteSuiteSuccessfully(): void
     {
         $suite = Suite::factory()->create();
 
@@ -23,13 +24,12 @@ class SuiteDeleteTest extends TestCase
             'id' => $suite->id,
         ]);
 
-
         $this->assertDatabaseMissing('suite_units', [
             'suite_id' => $suite->id,
         ]);
     }
 
-    public function test_should_return_404_when_deleting_non_existent_suite(): void
+    public function testShouldReturn404WhenDeletingNonExistentSuite(): void
     {
         $idInexistente = 9999;
 

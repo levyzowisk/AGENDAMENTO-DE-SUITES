@@ -6,33 +6,30 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Suite\SuiteServiceInterface;
 use App\Http\Requests\Suite\StoreSuiteRequest;
-use App\Http\Resources\SuiteResource;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Requests\Suite\UpdateSuiteRequest;
+use App\Http\Resources\SuiteResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SuiteController extends Controller
 {
     public function __construct(
-        private readonly SuiteServiceInterface $suiteServiceInterface
-    )
-    {
-    }
+        private readonly SuiteServiceInterface $suiteServiceInterface,
+    ) {}
 
     public function index(): AnonymousResourceCollection
     {
         $suites = $this->suiteServiceInterface->getAllSuites();
+
         return SuiteResource::collection($suites);
     }
 
-    public function show (int $id): SuiteResource
+    public function show(int $id): SuiteResource
     {
         $suite = $this->suiteServiceInterface->show($id);
-        
+
         return new SuiteResource($suite);
     }
-
 
     public function store(StoreSuiteRequest $request): JsonResponse
     {
@@ -46,7 +43,6 @@ class SuiteController extends Controller
         $this->suiteServiceInterface->destroy($id);
 
         return response()->json(null, 204);
-      
     }
 
     public function update(UpdateSuiteRequest $request, int $id): JsonResponse
@@ -55,7 +51,7 @@ class SuiteController extends Controller
 
         return response()->json(new SuiteResource($updatedSuite));
     }
-    
+
     public function suiteMap()
     {
         return [

@@ -10,35 +10,37 @@ use Tests\TestCase;
 
 class SuiteIndexTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	public function test_returns_empty_list_when_no_suites(): void
-	{
-		$response = $this->getJson('/api/suites');
+    public function testReturnsEmptyListWhenNoSuites(): void
+    {
+        $response = $this->getJson('/api/suites');
 
-		$response->assertStatus(200)
-			->assertJson(['data' => []]);
-	}
+        $response->assertStatus(200)
+            ->assertJson(['data' => []])
+        ;
+    }
 
-	public function test_returns_list_of_suites_with_expected_fields(): void
-	{
-		Suite::factory()->count(2)->create();
+    public function testReturnsListOfSuitesWithExpectedFields(): void
+    {
+        Suite::factory()->count(2)->create();
 
-		$response = $this->getJson('/api/suites');
+        $response = $this->getJson('/api/suites');
 
-		$response->assertStatus(200)
-			->assertJsonCount(2, 'data')
-			->assertJsonStructure([
-				'data' => [
-					'*' => [
-						'id',
-						'type_suite',
-						'amount_per_hour',
-						'available_count',
-						'created_at',
-						'updated_at',
-					],
-				],
-			]);
-	}
+        $response->assertStatus(200)
+            ->assertJsonCount(2, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'type_suite',
+                        'amount_per_hour',
+                        'available_count',
+                        'created_at',
+                        'updated_at',
+                    ],
+                ],
+            ])
+        ;
+    }
 }

@@ -10,8 +10,8 @@ use App\Contracts\UserRepositoryInterface;
 use App\Contracts\UserServiceInterface;
 use App\Repositories\SuiteRepository;
 use App\Repositories\UserRepository;
-use App\Service\UserService;
 use App\Service\SuiteService;
+use App\Service\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

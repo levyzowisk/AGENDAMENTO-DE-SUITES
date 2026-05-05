@@ -6,7 +6,4 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SuiteResource extends JsonResource
-{
-    
-}
+class SuiteResource extends JsonResource {}
