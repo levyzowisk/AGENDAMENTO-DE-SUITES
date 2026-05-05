@@ -17,4 +17,9 @@ class SuiteUnit extends Model
     {
         return $this->belongsTo(Suite::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }

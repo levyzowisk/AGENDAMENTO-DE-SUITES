@@ -56,25 +56,82 @@ Retorna um mapa de suítes com seus status atuais.
 ]
 ```
 
-## Bookings (agendamentos)
+## Schedules (Agendamentos)
 
-### GET /api/bookings
+### GET /api/schedules
 
 Retorna o histórico e o status dos agendamentos.
 
-```
+```json
 [
   {
-    "id": 50,
-    "suiteId": 1,
-    "scheduledTime": "2026-02-25T14:30:00Z",
-    "checkInTime": "2026-02-25T14:45:00Z",
-    "checkOutTime": null,
-    "reservationFeePaid": 50.00,
-    "status": "confirmed"
+    "id": 1,
+    "user_id": 1,
+    "suite_id": 1,
+    "suite_unit_id": 2,
+    "check_in": "2026-05-10T14:00:00Z",
+    "check_out": "2026-05-12T12:00:00Z",
+    "status": "PENDING",
+    "total_price": "150.00",
+    "notes": "Preparar decoração romântica",
+    "created_at": "2026-05-05T19:30:00.000000Z",
+    "updated_at": "2026-05-05T19:30:00.000000Z"
   }
 ]
 ```
+
+### POST /api/schedules
+
+Cria um novo agendamento.
+
+```json
+{
+  "user_id": 1,
+  "suite_id": 1,
+  "suite_unit_id": 2,
+  "check_in": "2026-05-10 14:00:00",
+  "check_out": "2026-05-12 12:00:00",
+  "status": "PENDING",
+  "total_price": 150.00,
+  "notes": "Preparar decoração romântica"
+}
+```
+
+### GET /api/schedules/{id}
+
+Retorna os detalhes de um agendamento específico.
+
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "suite_id": 1,
+  "suite_unit_id": 2,
+  "check_in": "2026-05-10T14:00:00Z",
+  "check_out": "2026-05-12T12:00:00Z",
+  "status": "PENDING",
+  "total_price": "150.00",
+  "notes": "Preparar decoração romântica",
+  "created_at": "2026-05-05T19:30:00.000000Z",
+  "updated_at": "2026-05-05T19:30:00.000000Z"
+}
+```
+
+### PATCH /api/schedules/{id}
+
+Edita as informações de um agendamento.
+
+```json
+{
+  "status": "CONFIRMED",
+  "notes": "Nova observação para a reserva"
+}
+```
+
+### DELETE /api/schedules/{id}
+
+Deleta um agendamento específico.
+
 
 ## Consumables (consumiveis)
 

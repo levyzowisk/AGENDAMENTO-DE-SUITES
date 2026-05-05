@@ -23,3 +23,7 @@ Route::prefix('suites')->group(function () {
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::apiResource('users', UserController::class);
 });
+
+Route::middleware(['auth:sanctum', 'role:admin|operator'])->group(function () {
+    Route::apiResource('schedules', \App\Http\Controllers\ScheduleController::class);
+});

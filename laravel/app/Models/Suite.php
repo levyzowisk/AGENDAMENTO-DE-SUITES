@@ -35,4 +35,9 @@ class Suite extends Model
         // dos quartos físicos vinculados a esta categoria que estão LIVRES.
         return $this->units()->where('status', SuiteStatusEnum::FREE->value)->count();
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
